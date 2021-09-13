@@ -131,7 +131,7 @@ function cancelanimate(animebox) {
 }
 function updateText(textcontainer) {
     var divs = textcontainer.children;
-    divs[0].innerHTML = text[0] + cursor; // + "<div id=\"div3\">" + text[2] + "</div>";
+    divs[0].innerHTML = text[0] + cursor;
     var word = text[2];
     if (text[1] == " ")
         word = "<u>" + " " + "</u>" + word.substring(1);
@@ -141,7 +141,6 @@ function updateText(textcontainer) {
 function keystroke(key) {
     var player = document.createElement("audio");
     player.src = key + ".mp3";
-    // player.volume = 1;
     player.play();
 }
 init();
@@ -150,11 +149,7 @@ function resetText(textcontainer) {
     text[0] = text[0].substring(text[0].lastIndexOf(" ") + 1);
     text[1] = "";
     divs[0].innerHTML = text[0] + cursor;
-    // divs[1].innerHTML = "";
-    // keystroke("type");
-    //enter here
 }
 function isFull(textcontainer) {
-    // console.log(textcontainer.children[0].innerHTML.length, charlimit);
     return (textcontainer.children[0].innerHTML.length - 26 > charlimit);
 }

@@ -52,6 +52,7 @@ u{
 }
 #div2{
     color:gray;
+    visibility:hidden;
 }
 #cursor{
     color:rgb(150, 150, 150);

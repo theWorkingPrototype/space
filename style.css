@@ -1,7 +1,6 @@
-@import url('https://fonts.googleapis.com/css2?family=Urbanist:wght@500&display=swap');
 *{
     box-sizing: border-box;
-    font-family: 'Urbanist' , Georgia;
+    font-family: Georgia;
 }
 body{
     margin:0;

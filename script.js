@@ -61,7 +61,7 @@ function init() {
         console.log("press");
         if (text[1] == " ") {
             score += 2 * (waitDelay - (performance.now() - t));
-            score=parseInt(score);
+            score=Math.floor(score);
             cancelanimate(animebox);
             gameLoop();
         }

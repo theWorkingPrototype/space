@@ -1,10 +1,11 @@
 var text = ["", "", ""];
 var cursor = "<span id=\"cursor\">|</span>";
 var charlimit = (.4 * visualViewport.width / 10);
-var store = ["\"Space?!\" he was astonished.", "\"Yes why not?\". They both stared at the " +
-    "enchanting lights of the night sky, trying to absorb the idea.", "\"Everytime I look up, there is something magical " +
-    "that awakes me,", "that pulls me away to the world beyond\",", "she said with that simple smile and calm voice,",
-    "\"unimaginably far away, something so familiar yet unreal,", "something that gives all of this a meaning.\"",
+var store = ["\"Space?!\" I said, astonished.", "\"Yes why not?\". We were staring at the " +
+    "night sky.", "\"Everytime I look up, there is something magical " +
+    "that awakes me,", "that pulls me away to the world beyond\",", "she said ,",
+    "\"unimaginably far away..... something so familiar yet unreal,", "something that gives all of this a meaning.\"",
+    "Her voice reflected the deepness of her thought.", "I was drawn by her to the world of calmness, of thought, of trance. It was an amazing journey.", "I understood."
 ];
 var shadow = localStorage.shadow ? localStorage.shadow : "hidden";
 if (shadow == "visible") {
@@ -15,7 +16,7 @@ function init() {
     var textcontainer = document.getElementById("part1");
     var animebox = document.getElementById("part2");
     animebox.addEventListener("click", pressSpace);
-    var speed = 200; //ms
+    var speed = 100; //ms
     var str = generateText();
     var waitDelay = 1000;
     var gameover = false;
@@ -29,11 +30,6 @@ function init() {
     high.innerHTML = localStorage.typehigh ? ("allTimeHigh:" + localStorage.typehigh) : "";
     document.addEventListener("keydown", function (e) {
         if (e.key == " ")
-            // if (!started) {
-            //     started = true;
-            //     gameLoop();
-            // }
-            // else
             pressSpace();
     });
     function gameLoop() {
@@ -68,7 +64,7 @@ function init() {
             gameLoop();
         }
         else
-            if (text[1] == " ") {
+            if (text[1] == " " && !gameover) {
                 score += 2 * (waitDelay - (performance.now() - t));
                 score = Math.floor(score);
                 cancelanimate(animebox);

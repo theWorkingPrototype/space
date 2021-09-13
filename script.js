@@ -2,19 +2,16 @@ var text = ["", "", ""];
 var cursor = "<span id=\"cursor\">|</span>";
 var charlimit = (.4 * visualViewport.width / 10);
 var store = ["\"Space?!\" he was astonished.", "\"Yes why not?\". They both stared at the " +
-        "enchanting lights of the night sky, trying to absorb the idea.", "\"Everytime I look up, there is something magical " +
-        "that awakes me,", "that pulls me away to the world beyond\",", "she said with that simple smile and calm voice,",
+    "enchanting lights of the night sky, trying to absorb the idea.", "\"Everytime I look up, there is something magical " +
+    "that awakes me,", "that pulls me away to the world beyond\",", "she said with that simple smile and calm voice,",
     "\"unimaginably far away, something so familiar yet unreal,", "something that gives all of this a meaning.\"",
 ];
-var shadow = "visible";
+var shadow = localStorage.shadow ? localStorage.shadow : "hidden";
+if (shadow == "visible") {
+    shadow = "hidden";
+    toggle();
+}
 function init() {
-    document.addEventListener("keydown", function (e) { if (e.key == " ")
-        if (!started) {
-            started = true;
-            gameLoop();
-        }
-        else
-            pressSpace(); });
     var textcontainer = document.getElementById("part1");
     var animebox = document.getElementById("part2");
     animebox.addEventListener("click", pressSpace);
@@ -30,6 +27,15 @@ function init() {
     address.innerHTML = "IveLostMy\"space\"CanyouHelpMeType?...PressSpaceToAccept.";
     var high = document.getElementsByClassName("address")[1];
     high.innerHTML = localStorage.typehigh ? ("allTimeHigh:" + localStorage.typehigh) : "";
+    document.addEventListener("keydown", function (e) {
+        if (e.key == " ")
+            // if (!started) {
+            //     started = true;
+            //     gameLoop();
+            // }
+            // else
+            pressSpace();
+    });
     function gameLoop() {
         address.innerHTML = score;
         if (save) {
@@ -47,33 +53,36 @@ function init() {
         }
         if (str)
             str = str.substring(1);
-        console.log(text[1]);
         if (text[1] == " ") {
             t = performance.now();
             save = setTimeout(gameOver, speed + waitDelay);
             animate(animebox, waitDelay);
-            setTimeout(cancelanimate, waitDelay);
+            setTimeout(cancelanimate, waitDelay, animebox);
         }
         else
             setTimeout(gameLoop, speed - (Math.random() - 1) * speed);
     }
     function pressSpace() {
-        console.log("press");
-        if (text[1] == " ") {
-            score += 2 * (waitDelay - (performance.now() - t));
-            score=Math.floor(score);
-            cancelanimate(animebox);
+        if (!started) {
+            started = true;
             gameLoop();
         }
-        else {
-            text[0] += " ";
-            updateText(textcontainer);
-            gameOver();
-        }
+        else
+            if (text[1] == " ") {
+                score += 2 * (waitDelay - (performance.now() - t));
+                score = Math.floor(score);
+                cancelanimate(animebox);
+                gameLoop();
+            }
+            else {
+                text[0] += " ";
+                updateText(textcontainer);
+                gameOver();
+            }
     }
     function gameOver() {
         cancelanimate(animebox);
-        if (score > localStorage.typehigh)
+        if (!localStorage.typehigh || score > localStorage.typehigh)
             localStorage.typehigh = score;
         animebox.style.backgroundColor = "rgb(200,150,150)";
         gameover = true;
@@ -85,7 +94,7 @@ function toggle() {
         shadow = "visible";
     else
         shadow = "hidden";
-    console.log(shadow);
+    localStorage.shadow = shadow;
     document.getElementById("div2").style.visibility = shadow;
 }
 function typeText(str, textcontainer, shadow) {
@@ -121,7 +130,7 @@ function cancelanimate(animebox) {
     var span = animebox.getElementsByTagName("span");
     var i = 0;
     while (i < 4) {
-        span[i].style.transitionDuration = 0 + "ms";
+        span[i].style.transitionDuration = 1 + "ms";
         i++;
     }
     span[0].style.width = 100 + "%";
@@ -141,12 +150,13 @@ function updateText(textcontainer) {
 function keystroke(key) {
     var player = document.createElement("audio");
     player.src = key + ".mp3";
+    // player.volume = 1;
     player.play();
 }
 init();
 function resetText(textcontainer) {
     var divs = textcontainer.children;
-    text[0] = text[0].substring(text[0].lastIndexOf(" ") + 1);
+    text[0] = text[0].substring(text[0].lastIndexOf(" ") + 1) + text[1];
     text[1] = "";
     divs[0].innerHTML = text[0] + cursor;
 }

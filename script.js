@@ -92,7 +92,6 @@ function typeText(str, textcontainer, shadow) {
     if (shadow === void 0) { shadow = true; }
     if (isFull(textcontainer))
         resetText(textcontainer);
-    console.log(str, text);
     if (shadow)
         text[2] = str ? str : "";
     if (text[1] == '' && !str)
